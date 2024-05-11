@@ -7,7 +7,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 public class TripService {
 
-    private final String apiKey = "AIzaSyC1M8KXf6NF6aywlH_WUJXg1UzYNWZn1yU";
+    private final String apiKey = "put your own api key here ";//不要用我的，我怕她受我钱
 
     public byte[] getStaticMap(String origin) {
         String url = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/staticmap")
