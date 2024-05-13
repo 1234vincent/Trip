@@ -16,8 +16,8 @@ public class TripController {
     @Autowired
     private TripService tripService;
 
-    // Endpoint to get directions
-    @GetMapping(value = "/get_directions", produces = "image/png")
+    // get static map
+    @GetMapping(value = "/get_static_map", produces = "image/png")
     public byte[] getMap(
             @RequestParam String origin,
             @RequestParam String destination) {
@@ -28,8 +28,8 @@ public class TripController {
             throw new RuntimeException("error getting static map");
         }
     }
-
-    @GetMapping(value = "/get_directions", produces = "image/png")
+    // get directions
+    @GetMapping(value = "/get_directions")
     public ResponseEntity<String> getDirections(
             @RequestParam String origin,
             @RequestParam String destination) {
@@ -38,6 +38,19 @@ public class TripController {
             return ResponseEntity.ok(directions);
         } catch (Exception e) {
             throw new RuntimeException("error getting directions");
+        }
+    }
+
+    // get street view 传两个参数，一个位置，一个view的方向
+    @GetMapping(value = "/get_street_view", produces = "image/png")
+    public byte[] getStreetView(
+            @RequestParam String location,
+            @RequestParam int heading) {
+        try {
+            byte[] imageBytes = tripService.getStreetView(location, heading);
+            return imageBytes;
+        } catch (Exception e) {
+            throw new RuntimeException("error getting street view");
         }
     }
     
