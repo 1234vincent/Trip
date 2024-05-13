@@ -54,4 +54,16 @@ public class TripController {
         }
     }
     
+    // get place 
+    @GetMapping(value = "/get_place")
+    public String getPlace(
+            @RequestParam String location) {
+        try {
+            String id = tripService.getPlaceId(location);
+            String place = tripService.getPlaceDetails(id);
+            return place;
+        } catch (Exception e) {
+            throw new RuntimeException("error getting place");
+        }
+    }
 }
