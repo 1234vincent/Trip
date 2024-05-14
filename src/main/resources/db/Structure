@@ -38,25 +38,6 @@ CREATE TABLE `preferences` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Table structure for table `trip_details`
---
-
-DROP TABLE IF EXISTS `trip_details`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `trip_details` (
-  `detail_id` int NOT NULL AUTO_INCREMENT,
-  `trip_id` int DEFAULT NULL,
-  `place_id` varchar(100) DEFAULT NULL,
-  `place_name` varchar(255) DEFAULT NULL,
-  `place_address` varchar(255) DEFAULT NULL,
-  `scheduled_time` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`detail_id`),
-  KEY `trip_id` (`trip_id`),
-  CONSTRAINT `trip_details_ibfk_1` FOREIGN KEY (`trip_id`) REFERENCES `trips` (`trip_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `trips`
