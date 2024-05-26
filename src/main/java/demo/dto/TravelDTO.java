@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
-import demo.model.Travel;
 
 public class TravelDTO {
     private int tripId;

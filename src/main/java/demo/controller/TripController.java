@@ -68,7 +68,7 @@ public class TripController {
         try {
             logger.info("Getting directions for userId: {}, origin: {}, destination: {}, mode: {}", userId, origin, destination, mode);
             String directions = tripService.getDirections(origin, destination, mode);
-//            userService.Save_Directions(origin, destination, userId);
+            userService.Save_Directions(origin, destination, userId);
             return ResponseEntity.ok(directions);
         } catch (Exception e) {
             logger.error("Error getting directions", e);

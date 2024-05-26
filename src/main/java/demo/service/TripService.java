@@ -8,7 +8,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import demo.model.User;
 
 
 @Service
