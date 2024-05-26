@@ -1,8 +1,10 @@
 package demo.service;
 
 import demo.dto.UserDTO;
+import demo.model.Travel;
 import demo.model.User;
 import demo.repository.Userrepository;
+import demo.repository.Triprepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +13,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @Service
 public class Userservice {
+    private static final Logger logger = LoggerFactory.getLogger(Userservice.class);
 
     @Autowired
     private Userrepository userRepository;
-
+    @Autowired
+    private Triprepository travelRepository;
     public List<UserDTO> getAllUser() {
         return userRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
 
@@ -57,7 +63,16 @@ public class Userservice {
         // 登录成功...
     }
 
+    public void Save_Directions(String origin, String destination, int userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        Travel travel = new Travel();
+        travel.setStartLocation(origin);
+        travel.setEndLocation(destination);
+        travel.setUser(user);
 
-
+        travelRepository.save(travel);
+        logger.info("保存成功: 用户ID: {}, 起点: {}, 终点: {}", userId, origin, destination);
+    }
 
 }

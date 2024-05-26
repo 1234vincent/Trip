@@ -8,6 +8,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import demo.model.User;
+
 
 @Service
 public class TripService {
@@ -106,6 +108,6 @@ public class TripService {
             throw new RuntimeException("No place found or error getting place id");
         }
     }
-    
-    
+
+
 }

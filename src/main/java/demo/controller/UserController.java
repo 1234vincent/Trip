@@ -1,5 +1,4 @@
 package demo.controller;
-
 import java.util.List;
 
 import demo.dto.LoginRequest;
@@ -14,11 +13,9 @@ import demo.service.Userservice;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-
     @Autowired
     private Userservice userService;
-
-// 注册模块
+    // 注册模块
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
@@ -40,9 +37,6 @@ public class UserController {
             return new ResponseEntity<>("登录失败: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
     @GetMapping("/all_user")
     public List<UserDTO> getAllUser() {
         return userService.getAllUser();

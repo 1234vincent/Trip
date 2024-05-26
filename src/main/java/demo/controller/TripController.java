@@ -6,21 +6,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import demo.service.TripService;
+import demo.service.Userservice;
 
 @RestController
 @RequestMapping("/trip")
 public class TripController {
-
+    private static final Logger logger = LoggerFactory.getLogger(TripController.class);
     @Autowired
     private TripService tripService;
-
+    @Autowired
+    private Userservice userService;
     // get static map
     @GetMapping(value = "/get_static_map", produces = "image/png")
     public byte[] getMap(
-            @RequestParam String origin,
-            @RequestParam String destination) {
+            @RequestParam String origin) {
         try {
             byte[] imageBytes = tripService.getStaticMap(origin);
             return imageBytes;
@@ -28,19 +30,6 @@ public class TripController {
             throw new RuntimeException("error getting static map");
         }
     }
-    // get directions
-    @GetMapping(value = "/get_directions")
-    public ResponseEntity<String> getDirections(
-            @RequestParam String origin,
-            @RequestParam String destination) {
-        try {
-            String directions = tripService.getDirections(origin, destination);
-            return ResponseEntity.ok(directions);
-        } catch (Exception e) {
-            throw new RuntimeException("error getting directions");
-        }
-    }
-
     // get street view 传两个参数，一个位置，一个view的方向
     @GetMapping(value = "/get_street_view", produces = "image/png")
     public byte[] getStreetView(
@@ -66,4 +55,23 @@ public class TripController {
             throw new RuntimeException("error getting place");
         }
     }
+
+        // get directions
+        @GetMapping(value = "/get_directions")
+        public ResponseEntity<String> getDirections(
+                @RequestParam String origin,
+                @RequestParam String destination,
+                @RequestParam int userId) {
+            try {
+                logger.info("Getting directions for userId: {}, origin: {}, destination: {}", userId, origin, destination);
+                String directions = tripService.getDirections(origin, destination);
+                userService.Save_Directions(origin, destination, userId); 
+                return ResponseEntity.ok(directions);
+            } catch (Exception e) {
+                logger.error("Error getting directions", e);
+                throw new RuntimeException("Error getting directions", e);
+            }
+        }
+
 }
+

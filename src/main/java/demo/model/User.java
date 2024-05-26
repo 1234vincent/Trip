@@ -1,8 +1,8 @@
 package demo.model;
 
 import jakarta.persistence.*;
-
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -22,69 +22,80 @@ public class User {
     @Column(nullable = true)
     private Timestamp updatedAt;
 
-    // Getters
+    @OneToMany(mappedBy = "user")
+    private List<Travel> trips;
+
+    // Getters and Setters
+
     public int getUserId() {
         return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    // Setters
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Travel> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Travel> trips) {
+        this.trips = trips;
     }
 }
