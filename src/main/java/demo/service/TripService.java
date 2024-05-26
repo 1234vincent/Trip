@@ -14,31 +14,32 @@ import demo.model.User;
 @Service
 public class TripService {
 
-    @Value("${google.maps.api-key}") 
+    @Value("${google.maps.api-key}")
     private String apiKey;
 
     public byte[] getStaticMap(String origin) {
-        
+
         String url = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/staticmap")
-        .queryParam("center", origin)
-        .queryParam("zoom", "12")
-        .queryParam("size", "600x300")
-        .queryParam("maptype", "roadmap")
-        .queryParam("markers", "color:blue|label:S|" + origin)
-        .queryParam("key", apiKey)
-        .toUriString();
-    
+                .queryParam("center", origin)
+                .queryParam("zoom", "12")
+                .queryParam("size", "600x300")
+                .queryParam("maptype", "roadmap")
+                .queryParam("markers", "color:blue|label:S|" + origin)
+                .queryParam("key", apiKey)
+                .toUriString();
+
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(url, byte[].class);
     }
 
-    public String getDirections(String origin, String destination) {
+    public String getDirections(String origin, String destination, String mode) {
         String url = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/directions/json")
                 .queryParam("origin", origin)
                 .queryParam("destination", destination)
+                .queryParam("mode", mode)
                 .queryParam("key", apiKey)
                 .toUriString();
-    
+
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(url, String.class);
     }
@@ -65,9 +66,9 @@ public class TripService {
                 .toUriString();
 
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(url, String.class); 
+        return restTemplate.getForObject(url, String.class);
     }
-    
+
     public String getPlaceDetails(String placeId) {
         String baseUrl = "https://maps.googleapis.com/maps/api/place/details/json";
         String url = UriComponentsBuilder.fromHttpUrl(baseUrl)
@@ -77,7 +78,7 @@ public class TripService {
                 .toUriString();
 
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(url, String.class); 
+        return restTemplate.getForObject(url, String.class);
     }
 
 
@@ -99,7 +100,7 @@ public class TripService {
                 .queryParam("fields", "place_id")
                 .queryParam("key", apiKey)
                 .toUriString();
-    
+
         RestTemplate restTemplate = new RestTemplate();
         PlaceResponse response = restTemplate.getForObject(url, PlaceResponse.class);
         if (response != null && response.candidates != null && response.candidates.length > 0) {
