@@ -1,12 +1,18 @@
 package demo.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import demo.model.Travel;
+import demo.model.TravelDetail;
+import demo.repository.Triprepository;
+import demo.repository.TravelDetailrepository;
 
 
 
@@ -15,6 +21,11 @@ public class TripService {
 
     @Value("${google.maps.api-key}")
     private String apiKey;
+    @Autowired
+    private  Triprepository tripRepository;
+
+    @Autowired
+    private TravelDetailrepository travelDetailService;
 
     public byte[] getStaticMap(String origin) {
 
@@ -107,6 +118,25 @@ public class TripService {
         } else {
             throw new RuntimeException("No place found or error getting place id");
         }
+    }
+
+    public TravelDetail addTravelDetail(Long tripId, TravelDetail detail) {
+        Travel trip = tripRepository.findById(tripId).orElseThrow(() -> new RuntimeException("Trip not found"));
+        detail.setTrip(trip);
+        return travelDetailService.save(detail);
+    }
+
+    public TravelDetail updateTravelDetail(int detailId, TravelDetail detail) {
+        TravelDetail existingDetail = travelDetailService.findById(detailId).orElseThrow(() -> new RuntimeException("Detail not found"));
+        existingDetail.setPlaceId(detail.getPlaceId());
+        existingDetail.setPlaceName(detail.getPlaceName());
+        existingDetail.setPlaceAddress(detail.getPlaceAddress());
+        existingDetail.setScheduledTime(detail.getScheduledTime());
+        return travelDetailService.save(existingDetail);
+    }
+
+    public void deleteTravelDetail(int detailId) {
+        travelDetailService.deleteById(detailId);
     }
 
 
