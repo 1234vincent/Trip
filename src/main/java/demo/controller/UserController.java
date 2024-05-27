@@ -20,9 +20,9 @@ public class UserController {
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
             userService.registerUser(user);
-            return new ResponseEntity<>("注册成功，请查收认证邮件", HttpStatus.CREATED);
+            return new ResponseEntity<>("register successful", HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>("注册失败: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("register failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -32,14 +32,13 @@ public class UserController {
         String password = loginRequest.getPassword();
         try {
             userService.loginUser(username, password);
-            return new ResponseEntity<>("登录成功", HttpStatus.OK);
+            return new ResponseEntity<>("login successful", HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("登录失败: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("login failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("/all_user")
     public List<UserDTO> getAllUser() {
         return userService.getAllUser();
     }
-    
 }

@@ -3,8 +3,10 @@ package demo.service;
 import demo.dto.UserDTO;
 import demo.model.Travel;
 import demo.model.User;
-import demo.repository.Userrepository;
 import demo.repository.Triprepository;
+import demo.repository.Userrepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 @Service
 public class Userservice {
     private static final Logger logger = LoggerFactory.getLogger(Userservice.class);
@@ -41,23 +42,22 @@ public class Userservice {
     public void registerUser(User user) {
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser.isPresent()) {
-            throw new IllegalArgumentException("邮箱已被注册");
+            throw new IllegalArgumentException("The email has been registered");
         }
         user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         userRepository.save(user);
-        System.out.println("注册成功");
+        System.out.println("register successful");
     }
 
     public void loginUser(String username, String password) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("用户不存在"));
+                .orElseThrow(() -> new IllegalArgumentException("the username is not found"));
 
         if (!user.getPassword().equals(password)) {
-            throw new IllegalArgumentException("密码错误");
-        }
-        else {
-            System.out.println("登录成功");
+            throw new IllegalArgumentException("password doesn't match");
+        } else {
+            System.out.println("login successful");
         }
 
         // 登录成功...
@@ -70,7 +70,6 @@ public class Userservice {
         travel.setStartLocation(origin);
         travel.setEndLocation(destination);
         travel.setUser(user);
-
         travelRepository.save(travel);
         logger.info("保存成功: 用户ID: {}, 起点: {}, 终点: {}", userId, origin, destination);
     }
